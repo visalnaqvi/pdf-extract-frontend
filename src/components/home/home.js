@@ -13,6 +13,7 @@ const Home = ({showFileInput , pdfFileProp}) => {
     const [pdfFile, setPdfFile] = useState(pdfFileProp);
     const [user, setUser] = useState({});
     const [extractBlob , setExtractBlob] = useState();
+    const [loading , setLoading] = useState(true);
 
     const handleFileChange = (event) => {
         const file = event.current.files[0];
@@ -28,6 +29,15 @@ const Home = ({showFileInput , pdfFileProp}) => {
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             validateSession(setUser);
         }  
+
+        async function checkBackendOnline(){
+            let response = await axios.get("http://localhost:3500/ping");
+            if(response.status===200){
+                setLoading(false);
+            }
+        }
+
+        checkBackendOnline()
     }, [token])
 
 
@@ -89,8 +99,8 @@ const Home = ({showFileInput , pdfFileProp}) => {
     
  
     return (
-        <>
-
+        <div>
+            {loading && <h1>Waiting for backend to come online. It might take few seconds as hosted on free service</h1>}
            {showFileInput && <FileInput handleFileChange={handleFileChange} handleSubmit={handleUpload} />}
             {response ? (
                 <div className={styles.wrapper}>
@@ -107,7 +117,7 @@ const Home = ({showFileInput , pdfFileProp}) => {
             ) : (
                 <div>{totalPages > 0 && <Pages pdfFile={pdfFile} count={totalPages} handleExtraction={handleExtraction} />}</div>
             )}
-        </>)
+        </div>)
 }
 
 export default Home;
