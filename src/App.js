@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from 'react';
+import NavBar from './components/navbar/nav';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './components/home/home.js';
+import LoginComponent from './components/login/login';
+import PreviousFiles from './components/previousFiles/previousFiles';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     
+      <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/login" element={<LoginComponent />} />
+        <Route path="/previous-files" element={<PreviousFiles />} />
+        <Route path="/" element={<Home showFileInput={true} />}></Route>
+      </Routes>
+    </BrowserRouter>
+     
+      
+
+
+      {/* <h1>Upload and Modify PDF</h1>
+      <input type="file" onChange={handleFileChange} accept=".pdf" />
+      <button onClick={handleUpload}>Upload PDF and Modify</button> */}
+
     </div>
   );
 }
